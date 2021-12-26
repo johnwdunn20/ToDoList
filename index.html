@@ -9,7 +9,7 @@
 <body>
 
     <!-- Things to Finish
-        - Get API to work
+        - Upate API
             - Display weather for each coming day and the current weather with more details at the top
         - Local Storage
             - Save info
@@ -24,9 +24,8 @@
             - For the whole day
             - For all days
             - Add a reset button 
-        - Separate into index html file
         - Add to github
-            - Make the website show up when you click on it
+            - Get github pages to work properly
 
     -->
 
@@ -362,7 +361,7 @@
             try {
 
                 // Get coordinates from this API
-                let url = `http://api.openweathermap.org/data/2.5/weather?zip=${zip}&units=imperial&appid=c2541fa183a6d1bc7a654334c0eadb43`;
+                let url = `https://api.openweathermap.org/data/2.5/weather?zip=${zip}&units=imperial&appid=c2541fa183a6d1bc7a654334c0eadb43`;
 
                 let lat;
                 let lon;
@@ -391,7 +390,7 @@
                         console.log(`${minTemp}F - ${maxTemp}F`);
 
                         // they provide a url for the icons, but icon id is in the data
-                        let icon = `http://openweathermap.org/img/w/${data.daily[dayNumber].weather[0].icon}.png`;
+                        let icon = `https://openweathermap.org/img/w/${data.daily[dayNumber].weather[0].icon}.png`;
                         let weatherDescription = data.daily[dayNumber].weather[0].main;
 
                         // needs to get called when you create
