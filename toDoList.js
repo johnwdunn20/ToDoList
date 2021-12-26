@@ -175,7 +175,7 @@
             try {
 
                 // Get coordinates from this API
-                let url = `http://api.openweathermap.org/data/2.5/weather?zip=${zip}&units=imperial&appid=c2541fa183a6d1bc7a654334c0eadb43`;
+                let url = `https://api.openweathermap.org/data/2.5/weather?zip=${zip}&units=imperial&appid=c2541fa183a6d1bc7a654334c0eadb43`;
 
                 let lat;
                 let lon;
