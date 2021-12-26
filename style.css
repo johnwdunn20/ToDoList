@@ -1,0 +1,79 @@
+body {
+    background-color: rgb(241, 206, 231);
+}
+
+.container{
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.dayContainer{   /* puts border around all div elements in the container*/
+    border: 3px rgb(18, 50, 230) solid;
+    padding: 5px;
+    max-width: 300px
+}
+
+.weather-container {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+    padding-right: 0px;
+    gap: 10px;
+    padding-top: 0px;
+}
+
+.day-container-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.day-title {
+    color: blue;
+    line-height: 0px;
+    margin-bottom: 0px;
+    justify-content: left;
+}
+
+#page-title {
+    color:blue;
+    gap: 10px;
+}
+
+ul {
+    word-wrap: break-word;
+    flex-wrap: nowrap;
+}
+
+.day-subtitle {
+    color: blue;
+    font-style: italic;
+    padding-bottom: 0px;
+}
+
+#add-new{
+    color: rgb(165, 161, 161);
+    
+}
+
+#add-new-header {
+    margin-bottom: 0px;
+}
+
+#add-new-button {
+    text-align: center;
+    font-size: 40px;
+}
+
+.remove-button {
+    color: red;
+    float: right;
+}
+
+#save-button {
+    align-items: right;
+    /* background-color:rgb(255, 0, 0); */
+    /* color: rgb(255, 255, 255); */
+    size: 100px;
+}
