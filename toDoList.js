@@ -204,7 +204,7 @@
                         console.log(`${minTemp}F - ${maxTemp}F`);
 
                         // they provide a url for the icons, but icon id is in the data
-                        let icon = `http://openweathermap.org/img/w/${data.daily[dayNumber].weather[0].icon}.png`;
+                        let icon = `https://openweathermap.org/img/w/${data.daily[dayNumber].weather[0].icon}.png`;
                         let weatherDescription = data.daily[dayNumber].weather[0].main;
 
                         // needs to get called when you create
