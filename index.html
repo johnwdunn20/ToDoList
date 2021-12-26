@@ -1,1 +1,87 @@
-<h1>Hi</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <!-- GetjQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <style src='style.css'></style>
+    
+    <h1 id='page-title'>To-do's for the week</h1>
+
+    <form>
+        <h4>Enter your zip to see the local weather forecast</h3>
+        <input id="weather-input">
+        <input id="add-zip" type="button" value="Get weather">
+    </form>
+    <br>
+    <form id='save-button-form'>
+        <input id="save-button" disabled type="button" value="Save List" title="Allows you to navigate away from the page and see your list when you return">
+    </form>
+    <br>
+
+    <div class="container">
+
+        <div class='dayContainer' id='day0'>
+            <h1 class='day-container-header'>
+                <span class = 'day-title' id='title0'>
+            </h1>
+            <p class = 'day-subtitle' id='subtitle0'><p>
+            <div class="weather-container">
+                <img class="icon">
+                <p class="weather"></p>
+                <p class="temp"></p>
+            </div>
+            <div class="add-button-container">
+                <input class = 'input' id="input0">
+                <input id="add0" type="button" value="Add">
+                <ul class='list' id="list0"></ul>
+            </div>
+        </div>
+
+        <div class='dayContainer' id='day1'>
+            <h1 class='day-container-header'>
+                <span class = 'day-title' id='title1'>
+            </h1>
+            <p class = 'day-subtitle' id='subtitle1'><p>
+            <div class="weather-container">
+                <img class="icon">
+                <p class="weather"></p>
+                <p class="temp"></p>
+            </div>
+            <input id="input1">
+            <input id="add1" type="button" value="Add">
+            <ul id="list1"></ul>
+        </div>
+
+        <div class='dayContainer'>
+            <h1 class = 'day-title'></h1>
+            <p class = 'day-subtitle'><p>
+            <div class="weather-container">
+                <img class="icon">
+                <p class="time"></p>
+                <p class="weather"></p>
+                <p class="temp"></p>
+            </div>
+            <input>
+            <input type="button" value="Add">
+            <ul></ul>
+        </div>
+
+        <div id='add-new'>
+            <h1 id='add-new-header'>Add another day <span id =add-new-button>+</span></h1>
+                </div>
+              </div>
+            </h1>
+        </div>
+    </div>
+
+    <script src='toDoList.js'></script>
+</body>
+</html>
