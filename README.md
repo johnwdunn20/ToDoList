@@ -1,2 +1,6 @@
 # ToDoList
-Allows you to to see the weather for each day and create a to-do list for as many days in the future as you'd like.
+Allows you to to see the weather for the next week and create a to-do list for each day. Your entered zip code is stored in local storage so that you don't need to re-enter your location every time you navigate to the page.
+
+Development In Progress:
+- Weather API Call - errors need to be handled better
+- Storing to-do items in local storage; "Save List" button currently doesn't work
