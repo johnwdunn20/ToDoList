@@ -1,17 +1,5 @@
-
-        //comment out later
-        window.localStorage.clear();
-        let zip = 94939;
-        getWeather();
-        let dayNumber = 0;
-
-        let today = new Date();
         let daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
         let monthsOfYear = ['January','February','March','April','May','June','July','August','September','October','Novemeber','December'];
-
-        for (let dayOnCalendar = 0; dayOnCalendar < 3/*Needs to be dynamic*/; dayOnCalendar++) {
-            populateDates(dayOnCalendar);
-        }
         
         function populateDates(dayOnCalendar) {
             let container = document.getElementsByClassName('container')[0];
@@ -20,24 +8,22 @@
             let dayContainers = container.getElementsByClassName('dayContainer');
             let numberDays = dayContainers.length;
             let currentDay = dayContainers[dayOnCalendar];
-            console.log('*****')
-            console.log(currentDay)
 
             let title = currentDay.getElementsByClassName('day-title')[0];
             let subtitle = currentDay.getElementsByClassName('day-subtitle')[0];
 
-            today.setDate(today.getDate() + dayOnCalendar)
+            let today = new Date();
+            today.setDate(today.getDate() + dayOnCalendar);
             title.innerHTML = `${daysOfWeek[today.getDay()]}`;
             subtitle.innerHTML = `${monthsOfYear[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`;
             return;
         }
-
-        let add1 = document.getElementById('add0');
-        add1.addEventListener('click', function() {
-            addNewItem(this);
-        });
-
-        let counter = localStorage.length;
+        function allowItems(dayOnCalendar) {
+            let addItemButton = document.getElementsByClassName('add-item')[dayOnCalendar];
+            addItemButton.addEventListener('click', function() {
+                addNewItem(this);
+            });
+        }
 
         function addNewItem(element) {
 
@@ -47,7 +33,7 @@
                 let list = element.parentNode.getElementsByTagName('ul')[0];
 
                 if (list.getElementsByTagName('li').length == 0) {
-                    addClearButton();
+                    addClearButton(element.parentNode);
                 }
 
                 // add new item
@@ -55,12 +41,6 @@
                 newItem.className = 'item';
                 newItem.innerHTML = inputText + '<strong class="remove-button" onclick="removeItem(event)">[x]</strong>';;
                 list.append(newItem)
-
-
-
-                localStorage.setItem(counter, inputText);
-                console.log(`Added "${inputText}" to local storage`);
-                counter++;
 
                 input.value = '';
 
@@ -76,105 +56,59 @@
             event.currentTarget.closest('li').remove();
         }
 
-        function addClearButton() {
-            let list0 = document.getElementById('list0');
+        function addClearButton(parent) {
+            let list0 = parent.getElementsByClassName('list')[0];
             let clearButton = document.createElement('input');
             clearButton.id = 'clear';
             clearButton.type = 'button';
             clearButton.value = 'Clear All';
-            clearButton.addEventListener('click', clearList);
+            clearButton.addEventListener('click', function() {
+                clearList(this);
+            });
             
             let br = document.createElement('br');
-
             list0.before(br);
             list0.before(clearButton);
-
-            console.log('Adding clear button');
         }
 
         // clears entire list
-        function clearList() {
-            // clear list
-            let list = document.getElementById('list0');
-
+        function clearList(element) {
+            let list = element.parentNode.getElementsByClassName('list')[0];
             while (list.firstChild) {
                 list.removeChild(list.firstChild);
             }
-
             // remove clear button
             let clearButton = document.getElementById('clear');
             clearButton.remove();
         }
 
-        function addNewItemFromLocalStorage(itemFromLocal) {
-
-            let list = document.getElementById('list0');
-            let newItem = document.createElement('li');
-
-            newItem.className = 'item';
-            newItem.innerHTML = itemFromLocal;
-            list1.append(newItem);
-
-        }
-
-        function addListFromLocalStorage() {
-            console.log(localStorage.length);
-            for (let i = 0; i < localStorage.length; i++){
-                let localItem = localStorage.getItem(localStorage.key(i));
-                addNewItemFromLocalStorage(localItem);
-
-                console.log(`Added "${i}: ${localItem}" from local storage`);
-            }
-        }
-
-        addListFromLocalStorage();
-
-        
-        function addNewDay() {
-
-            //***Fill in code from practice here**
-            return;
-        }
-
-        // let stop = 0;
-        // for([key,value] in window.localStorage) {
-        //     console.log(`${key}: ${window.localStorage.getItem(key)} aka ${value}`);
-
-        //     stop++;
-        //     if (stop > 10) {
-        //         break;
-        //     }
-        // }
-        
-        
-        // also session storage to store your session
-        // info stored in chrome dev tools under application
-        
-        //set item in local storage
-        // localStorage.setItem('name', 'John');
-
-        // get item in local storage
-
-        // let myName = localStorage.getItem('name');
-        // console.log(myName);
 
 
         // **** Need to get this to work later ***
 
         let zipInput = document.getElementById('add-zip');            
-        zipInput.addEventListener('click', getWeather);
+        zipInput.addEventListener('click', function() {
+            getWeather(this);
+        });
 
-        // async function getUsers(url) {
-        //     let response = await fetch(url);
-        //     let data = await response.json()
-        //     return data;
-        //     }  
-
-        function getWeather() {
+        function getWeather(element) {
+            let zip;
+            if (element) {
+                let inputElement = element.parentNode.getElementsByTagName('input')[0];
+                zip = inputElement.value;
+                if (zip.length != 5) {
+                    alert('Please enter a 5 digit numeric zip code');
+                    return;
+                }
+                if (isNaN(zip)) {
+                    alert('Please enter a 5 digit numeric zip code');
+                    return;        
+                }
+                localStorage.setItem('zip', zip);
+                inputElement.value = '';
+            } else zip = localStorage.getItem('zip');
 
             try {
-
-                // Get coordinates from this API
                 let url = `https://api.openweathermap.org/data/2.5/weather?zip=${zip}&units=imperial&appid=c2541fa183a6d1bc7a654334c0eadb43`;
 
                 let lat;
@@ -184,9 +118,8 @@
 
                     lat = data.coord.lat;
                     lon = data.coord.lon;
-                    console.log(` Latitude ${lat}`);
-                    console.log(` Longitude ${lon}`);
-
+                    let pageTitle = document.getElementById('page-title');
+                    pageTitle.innerHTML = `To-do's in ${data.name}`;
                 })
 
                 // Update to async/await later
@@ -199,19 +132,26 @@
 
                     $.getJSON(urlForecast, function(data) {
 
-                        let minTemp = data.daily[dayNumber].temp.min;
-                        let maxTemp = data.daily[dayNumber].temp.max;
-                        console.log(`${minTemp}F - ${maxTemp}F`);
+                        let dayContainers = document.getElementsByClassName('dayContainer');
+                        let numberDays = dayContainers.length - 1;
 
-                        // they provide a url for the icons, but icon id is in the data
-                        let icon = `https://openweathermap.org/img/w/${data.daily[dayNumber].weather[0].icon}.png`;
-                        let weatherDescription = data.daily[dayNumber].weather[0].main;
-
-                        // needs to get called when you create
-                        let day0 = document.getElementById('day0');
-                        day0.getElementsByClassName('icon')[0].src = icon;
-                        day0.getElementsByClassName('temp')[0].innerHTML = `${minTemp} - ${maxTemp}F&#176;`;
-                        day0.getElementsByClassName('weather')[0].innerHTML = weatherDescription;
+                        for (let dayNumber = 0; dayNumber <= numberDays; dayNumber++) {
+                            console.log(`day number ${dayNumber}`);
+                            let minTemp = data.daily[dayNumber].temp.min;
+                            let maxTemp = data.daily[dayNumber].temp.max;
+                            console.log(`${minTemp}F - ${maxTemp}F`);
+    
+                            // they provide a url for the icons, but icon id is in the data
+                            let icon = `https://openweathermap.org/img/w/${data.daily[dayNumber].weather[0].icon}.png`;
+                            let weatherDescription = data.daily[dayNumber].weather[0].main;
+    
+                            // needs to get called when you create
+                            let day = dayContainers[dayNumber];
+                            console.log(day);
+                            day.getElementsByClassName('icon')[0].src = icon;
+                            day.getElementsByClassName('temp')[0].innerHTML = `${Math.round(minTemp)} - ${Math.round(maxTemp)} &#176;F`;
+                            day.getElementsByClassName('weather')[0].innerHTML = weatherDescription;
+                        }
                     })}
                 , 600);
                 // Use those coordinates to get a forecast
@@ -228,13 +168,11 @@
         
         function addNewDay() {
             let container = document.getElementsByClassName('container')[0];
-            console.log(container);
 
             // find the last day so we can add after it - would have been easier to go from the end of the container
             let dayContainers = container.getElementsByClassName('dayContainer');
             let numberDays = dayContainers.length;
             let lastDay = dayContainers[numberDays-1];
-            console.log(lastDay)
 
             // add new dayContainer
             let newDayContainer = document.createElement('div');
@@ -252,30 +190,16 @@
                 </div>
                 <div class="add-button-container">
                     <input class = 'input'>
-                    <input type="button" value="Add">
+                    <input type="button" value="Add" class='add-item'>
                     <ul class='list'></ul>
                     
                 </div>`;
 
             lastDay.parentNode.insertBefore(newDayContainer, lastDay.nextSibling);
 
-            // populateDates(lastDay + 1);
-
-            let dayOnCalendar = 3;
-            let container1 = document.getElementsByClassName('container')[0];
-            // find the last day so we can add after it - would have been easier to go from the end of the container
-            let dayContainers1 = container1.getElementsByClassName('dayContainer');
-            let numberDays1 = dayContainers1.length;
-            let currentDay1 = dayContainers1[dayOnCalendar];
-
-            let title = currentDay1.getElementsByClassName('day-title')[0];
-            let subtitle = currentDay1.getElementsByClassName('day-subtitle')[0];
-
-            today.setDate(today.getDate() + dayOnCalendar)
-            title.innerHTML = `${daysOfWeek[today.getDay()]}`;
-            subtitle.innerHTML = `${monthsOfYear[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`;
-            console.log('title style' + title.style);
-            return;
+            populateDates(numberDays);
+            allowItems(numberDays);
+            getWeather();
 
         }
     
@@ -325,6 +249,13 @@
             saveButton.style.color = 'rgb(255, 255, 255)';
         }
 
+        // initial calls for first day
+        populateDates(0);
+        allowItems(0);
+        getWeather();
+
+
+        // **** Saving in Local Storage*** 
         // Notify if not saved
         // let saveListButton = document.getElementById('save-button');
         // console.log(saveListButton.disabled)
@@ -334,3 +265,27 @@
         //         e.returnValue = '';
         //     }
         // });
+
+        // function addNewItemFromLocalStorage(itemFromLocal) {
+
+        //     let list = document.getElementById('list0');
+        //     let newItem = document.createElement('li');
+
+        //     newItem.className = 'item';
+        //     newItem.innerHTML = itemFromLocal;
+        //     list1.append(newItem);
+
+        // }
+
+        // function addListFromLocalStorage() {
+        //     console.log(localStorage.length);
+        //     for (let i = 0; i < localStorage.length; i++){
+        //         let localItem = localStorage.getItem(localStorage.key(i));
+        //         addNewItemFromLocalStorage(localItem);
+
+        //         console.log(`Added "${i}: ${localItem}" from local storage`);
+        //     }
+        // }
+
+        // addListFromLocalStorage();
+        
