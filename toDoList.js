@@ -20,8 +20,16 @@
         }
         function allowItems(dayOnCalendar) {
             let addItemButton = document.getElementsByClassName('add-item')[dayOnCalendar];
+            let textInput = document.getElementsByClassName('input')[dayOnCalendar];
+            console.log(textInput);
             addItemButton.addEventListener('click', function() {
                 addNewItem(this);
+            });
+            textInput.addEventListener("keyup", function(event) {
+                if(event.key !== "Enter") return;
+                event.preventDefault();
+                addNewItem(this);
+                
             });
         }
 
@@ -34,13 +42,18 @@
 
                 if (list.getElementsByTagName('li').length == 0) {
                     addClearButton(element.parentNode);
+                    console.log(('Add clear button from "addNewItem function'));
                 }
 
                 // add new item
                 let newItem = document.createElement('li');
                 newItem.className = 'item';
-                newItem.innerHTML = inputText + '<strong class="remove-button" onclick="removeItem(event)">[x]</strong>';;
-                list.append(newItem)
+                newItem.innerHTML = `<span class="item-text"> ${inputText} </span>
+                <div class="item-div">
+                    <strong class="check-item" onclick="checkItem(event)">[&#10003;]</strong>
+                    <strong class="remove-button" onclick="removeItem(event)">[x]</strong>
+                </div>`;
+                list.append(newItem);
 
                 input.value = '';
 
@@ -51,8 +64,31 @@
         }
         }
 
+        function checkItem(event) {
+            let itemText = event.currentTarget.closest('li').firstChild;
+            console.log('checking');
+            console.log(event.currentTarget);
+            console.log(itemText);
+            if (itemText.className != 'item-text-strikethrough') {
+                itemText.className = 'item-text-strikethrough';
+
+                event.currentTarget.innerHTML = '[&#9100]';
+                event.currentTarget.className = 'uncheck-item';
+                console.log(event.currentTarget);
+                console.log(itemText);
+                return;
+                
+            }
+            itemText.className = 'item-text';
+            event.currentTarget.innerHTML = '[&#10003;]';
+            event.currentTarget.className = 'check-item';
+        }
+
         // remove individual item in list
         function removeItem(event) {
+            if (event.currentTarget.closest('ul').getElementsByTagName('li').length == 1) {
+                event.currentTarget.closest('.add-button-container').querySelector('#clear').remove();
+            }
             event.currentTarget.closest('li').remove();
         }
 
@@ -65,10 +101,9 @@
             clearButton.addEventListener('click', function() {
                 clearList(this);
             });
-            
-            let br = document.createElement('br');
-            list0.before(br);
-            list0.before(clearButton);
+            console.log('Adding clear button');
+            console.log(parent.getElementsByTagName('br').length == 2);
+                list0.before(clearButton);
         }
 
         // clears entire list
@@ -78,18 +113,25 @@
                 list.removeChild(list.firstChild);
             }
             // remove clear button
-            let clearButton = document.getElementById('clear');
-            clearButton.remove();
+            element.remove();
         }
 
 
 
         // **** Need to get this to work later ***
 
-        let zipInput = document.getElementById('add-zip');            
-        zipInput.addEventListener('click', function() {
+        let zipSubmit = document.getElementById('add-zip');            
+        zipSubmit.addEventListener('click', function() {
             getWeather(this);
         });
+        let zipInput = document.getElementById('weather-input');
+        zipInput.addEventListener("keyup", function(event) {
+            if(event.key !== "Enter") return;
+            event.preventDefault();
+            console.log('enter');
+            getWeather(this);
+            
+        }, false);
 
         function getWeather(element) {
             let zip;
@@ -136,10 +178,8 @@
                         let numberDays = dayContainers.length - 1;
 
                         for (let dayNumber = 0; dayNumber <= numberDays; dayNumber++) {
-                            console.log(`day number ${dayNumber}`);
                             let minTemp = data.daily[dayNumber].temp.min;
                             let maxTemp = data.daily[dayNumber].temp.max;
-                            console.log(`${minTemp}F - ${maxTemp}F`);
     
                             // they provide a url for the icons, but icon id is in the data
                             let icon = `https://openweathermap.org/img/w/${data.daily[dayNumber].weather[0].icon}.png`;
@@ -153,7 +193,7 @@
                             day.getElementsByClassName('weather')[0].innerHTML = weatherDescription;
                         }
                     })}
-                , 600);
+                , 800);
                 // Use those coordinates to get a forecast
             } catch(error) {
                     console.log('Did not work');
@@ -189,8 +229,10 @@
                     <p class="temp"></p>
                 </div>
                 <div class="add-button-container">
-                    <input class = 'input'>
+                    <input class = 'input' placeholder="Enter your plans">
                     <input type="button" value="Add" class='add-item'>
+                    <br>
+                    <br>   
                     <ul class='list'></ul>
                     
                 </div>`;

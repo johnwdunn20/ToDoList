@@ -8,17 +8,19 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css"> -->
+
 
     <!-- GetjQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <!-- <style src='style.css'></style> -->
     
-    <h1 id='page-title'>To-do's</h1>
+    <h1 id='page-title'>Plan your days</h1>
 
-    <form>
-        <h4>Enter your zip to see the local weather forecast</h3>
-        <input id="weather-input">
+    <form id='subheading' onSubmit='return false;'>
+        <h4>Enter your zip, create to-do's for each day, and add additional days with the "Add Another Day" button</h4>
+        <input id="weather-input" type="text" placeholder="Enter Zip">
         <input id="add-zip" type="button" value="Get weather">
     </form>
     <br>
@@ -40,8 +42,10 @@
                 <p class="temp"></p>
             </div>
             <div class="add-button-container">
-                <input class = 'input' id="input0">
-                <input id="add0" type="button" value="Add"  class='add-item'>
+                <input class = 'input' id="input0" type="text" placeholder="Enter your plans">
+                <input id="add0" type="button" value="Add" class='add-item'>
+                <br>
+                <br>
                 <ul class='list' id="list0"></ul>
             </div>
         </div>

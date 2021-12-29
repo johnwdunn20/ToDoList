@@ -1,5 +1,5 @@
 body {
-    background-color: rgb(241, 206, 231);
+    background-color: rgb(209, 224, 231);
 }
 
 .container{
@@ -9,7 +9,7 @@ body {
 }
 
 .dayContainer{   /* puts border around all div elements in the container*/
-    border: 3px rgb(18, 50, 230) solid;
+    border: 3px rgb(46, 73, 231) solid;
     padding: 5px;
     max-width: 300px
 }
@@ -53,8 +53,7 @@ ul {
 }
 
 #add-new{
-    color: rgb(165, 161, 161);
-    
+    color: rgb(129, 128, 128);
 }
 
 #add-new-header {
@@ -66,10 +65,28 @@ ul {
     font-size: 40px;
 }
 
-.remove-button {
-    color: red;
+.item {
+    height: 20px;
+}
+.item-text-strikethrough {
+    text-decoration: line-through;
+}
+.item div {
     float: right;
 }
+.check-item {
+    color: green;
+    /* float: right; */
+}
+.uncheck-item {
+    color: blue;
+}
+.remove-button {
+    color: red;
+    /* float: right; */
+}
+
+
 
 #save-button {
     align-items: right;
