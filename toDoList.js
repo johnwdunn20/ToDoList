@@ -21,7 +21,6 @@
         function allowItems(dayOnCalendar) {
             let addItemButton = document.getElementsByClassName('add-item')[dayOnCalendar];
             let textInput = document.getElementsByClassName('input')[dayOnCalendar];
-            console.log(textInput);
             addItemButton.addEventListener('click', function() {
                 addNewItem(this);
             });
@@ -42,7 +41,6 @@
 
                 if (list.getElementsByTagName('li').length == 0) {
                     addClearButton(element.parentNode);
-                    console.log(('Add clear button from "addNewItem function'));
                 }
 
                 // add new item
@@ -66,16 +64,11 @@
 
         function checkItem(event) {
             let itemText = event.currentTarget.closest('li').firstChild;
-            console.log('checking');
-            console.log(event.currentTarget);
-            console.log(itemText);
             if (itemText.className != 'item-text-strikethrough') {
                 itemText.className = 'item-text-strikethrough';
 
                 event.currentTarget.innerHTML = '[&#9100]';
                 event.currentTarget.className = 'uncheck-item';
-                console.log(event.currentTarget);
-                console.log(itemText);
                 return;
                 
             }
@@ -101,9 +94,7 @@
             clearButton.addEventListener('click', function() {
                 clearList(this);
             });
-            console.log('Adding clear button');
-            console.log(parent.getElementsByTagName('br').length == 2);
-                list0.before(clearButton);
+            list0.before(clearButton);
         }
 
         // clears entire list
@@ -128,7 +119,6 @@
         zipInput.addEventListener("keyup", function(event) {
             if(event.key !== "Enter") return;
             event.preventDefault();
-            console.log('enter');
             getWeather(this);
             
         }, false);
@@ -187,7 +177,6 @@
     
                             // needs to get called when you create
                             let day = dayContainers[dayNumber];
-                            console.log(day);
                             day.getElementsByClassName('icon')[0].src = icon;
                             day.getElementsByClassName('temp')[0].innerHTML = `${Math.round(minTemp)} - ${Math.round(maxTemp)} &#176;F`;
                             day.getElementsByClassName('weather')[0].innerHTML = weatherDescription;
@@ -196,7 +185,8 @@
                 , 800);
                 // Use those coordinates to get a forecast
             } catch(error) {
-                    console.log('Did not work');
+                    // Could I display something like this to the user?
+                    console.log('API did not work - need to refresh page');
                 }
 
 
@@ -246,29 +236,25 @@
         }
     
         function saveItems() {
+            let zip = window.localStorage.getItem('zip');
             window.localStorage.clear();
-
-            // add zip to local storage
-            localStorage.setItem('zip', zip);
+            window.localStorage.setItem('zip',zip);
 
             // add items
             let itemsInLists = {};
             let days = document.getElementsByClassName('dayContainer');
-            console.log(days);
             for (day of days) {
                 // store the day
-                console.log(day);
                 let date = day.getElementsByClassName('day-subtitle')[0].innerHTML;
                 itemsInLists[date] = [];
 
                 // get each individual item
-                let items = day.getElementsByClassName('item');
-                for (item of items) {
-                    itemsInLists[date].push(item);
+                let allItemTexts = day.getElementsByClassName('item-text');
+                for (itemText of allItemTexts) {
+                    itemsInLists[date].push(itemText.innerHTML);
                 }
             }
-            console.log(itemsInLists);
-            localStorage.setItem('items', itemsInLists);
+            localStorage.setItem('itemsInLists', JSON.stringify(itemsInLists));
 
             // reset save button by clearing and creating a new one
             document.getElementById('save-button').remove();
@@ -282,6 +268,31 @@
             newSaveButton.onclick = 'saveItems';
             saveButtonForm.append(newSaveButton);
         }
+
+        // add data back in
+        document.addEventListener('DOMContentLoaded', function(event) {
+            let itemsInLists = JSON.parse(window.localStorage.getItem('itemsInLists'));
+            console.log('DOMContentLoad');
+
+            let today = new Date();
+            let todayFormatted = `${monthsOfYear[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`;
+            // console.log(todayFormatted);
+
+            for (let day in itemsInLists) {
+                
+                let items = itemsInLists[day];
+                console.log(items);
+                // if (day != today) continue;
+                for (item of items) {
+                    console.log(item);
+                }
+                
+            }
+        });
+
+
+
+
 
         function activateSaveButton() {
             let saveButton = document.getElementById('save-button');
