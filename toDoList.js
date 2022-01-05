@@ -33,10 +33,10 @@
         }
 
         function addNewItem(element) {
-
             let input = element.parentNode.getElementsByTagName('input')[0];
             let inputText = input.value; 
-            if (inputText) {
+
+            if (element) {
                 let list = element.parentNode.getElementsByTagName('ul')[0];
 
                 if (list.getElementsByTagName('li').length == 0) {
@@ -105,6 +105,8 @@
             }
             // remove clear button
             element.remove();
+
+            activateSaveButton();
         }
 
 
@@ -234,6 +236,15 @@
             getWeather();
 
         }
+
+        function activateSaveButton() {
+            let saveButton = document.getElementById('save-button');
+            saveButton.onclick = saveItems;
+            saveButton.disabled = false;
+            saveButton.style.backgroundColor = 'rgb(255, 0, 0)';
+            saveButton.style.color = 'rgb(255, 255, 255)';
+        }
+
     
         function saveItems() {
             let zip = window.localStorage.getItem('zip');
@@ -251,6 +262,7 @@
                 // get each individual item
                 let allItemTexts = day.getElementsByClassName('item-text');
                 for (itemText of allItemTexts) {
+                    // need to check if the element is stuck-through
                     itemsInLists[date].push(itemText.innerHTML);
                 }
             }
@@ -269,76 +281,57 @@
             saveButtonForm.append(newSaveButton);
         }
 
-        // add data back in
-        document.addEventListener('DOMContentLoaded', function(event) {
-            let itemsInLists = JSON.parse(window.localStorage.getItem('itemsInLists'));
-            console.log('DOMContentLoad');
+        // add data back in if it's already stored
+        if (localStorage.getItem('zip')) {
+            document.addEventListener('DOMContentLoaded', function(event) {
+                let itemsInLists = JSON.parse(window.localStorage.getItem('itemsInLists'));
+                console.log('DOMContentLoad');
 
-            let today = new Date();
-            let todayFormatted = `${monthsOfYear[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`;
-            // console.log(todayFormatted);
+                let date = new Date();
+                // today.setDate(today.getDate() + counter);
+                let todayFormatted = `${monthsOfYear[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
 
-            for (let day in itemsInLists) {
-                
-                let items = itemsInLists[day];
-                console.log(items);
-                // if (day != today) continue;
-                for (item of items) {
-                    console.log(item);
+                counter = 0;
+                for (let day in itemsInLists) {
+                    // need to skip until we reach the current date
+                    // if (day != today) continue;
+                    let items = itemsInLists[day];
+                    console.log(day);
+                    console.log(items);
+
+                    // add new day if not for the first element
+                    if (counter > 0) addNewDay();
+
+                    let inputs = document.getElementsByClassName('input');
+                    console.log(` counter: ${counter}`);
+                    console.log(inputs);
+                    let inputElement = inputs[inputs.length - 1];
+                    console.log(inputElement);
+                    for (item of items) {
+                        inputElement.value = item;
+                        addNewItem(inputElement);
+                    }
+                    
+                    counter++;
                 }
-                
+            });
+        }
+
+        // **** Saving in Local Storage*** 
+        // Notify if not saved
+        
+        window.addEventListener('beforeunload', function (e) {
+            let saveListButton = document.getElementById('save-button');
+            if (!saveListButton.disabled) {
+                e.preventDefault();
+                e.returnValue = '';
             }
         });
 
-
-
-
-
-        function activateSaveButton() {
-            let saveButton = document.getElementById('save-button');
-            saveButton.onclick = saveItems;
-            saveButton.disabled = false;
-            saveButton.style.backgroundColor = 'rgb(255, 0, 0)';
-            saveButton.style.color = 'rgb(255, 255, 255)';
-        }
 
         // initial calls for first day
         populateDates(0);
         allowItems(0);
         getWeather();
-
-
-        // **** Saving in Local Storage*** 
-        // Notify if not saved
-        // let saveListButton = document.getElementById('save-button');
-        // console.log(saveListButton.disabled)
-        // window.addEventListener('beforeunload', function (e) {
-        //     if (!saveListButton.disabled) {
-        //         e.preventDefault();
-        //         e.returnValue = '';
-        //     }
-        // });
-
-        // function addNewItemFromLocalStorage(itemFromLocal) {
-
-        //     let list = document.getElementById('list0');
-        //     let newItem = document.createElement('li');
-
-        //     newItem.className = 'item';
-        //     newItem.innerHTML = itemFromLocal;
-        //     list1.append(newItem);
-
-        // }
-
-        // function addListFromLocalStorage() {
-        //     console.log(localStorage.length);
-        //     for (let i = 0; i < localStorage.length; i++){
-        //         let localItem = localStorage.getItem(localStorage.key(i));
-        //         addNewItemFromLocalStorage(localItem);
-
-        //         console.log(`Added "${i}: ${localItem}" from local storage`);
-        //     }
-        // }
-
-        // addListFromLocalStorage();
+        
         
