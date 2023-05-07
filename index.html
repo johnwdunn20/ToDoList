@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" class="far fa-list-alt">
+    <title>To Do List</title>
 </head>
+
 <body>
     <!-- <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css"> -->
 
@@ -15,7 +19,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <!-- <style src='style.css'></style> -->
-    
+    <i class="far fa-list-alt"></i>
     <h1 id='page-title'>Plan your days</h1>
 
     <form id='subheading' onSubmit='return false;'>
@@ -25,7 +29,8 @@
     </form>
     <br>
     <form id='save-button-form'>
-        <input id="save-button" disabled type="button" value="Save List  &#9432;" title="Allows you to navigate away from the page and see your list when you return">
+        <input id="save-button" disabled type="button" value="Save List  &#9432;"
+            title="Allows you to navigate away from the page and see your list when you return">
         <div class="hide">Saves your to-do items and re-populates them when you return to the page</div>
     </form>
     <br>
@@ -34,16 +39,17 @@
 
         <div class='dayContainer' id='day0'>
             <h1 class='day-container-header'>
-                <span class = 'day-title' id='title0'>
+                <span class='day-title' id='title0'>
             </h1>
-            <p class = 'day-subtitle' id='subtitle0'><p>
+            <p class='day-subtitle' id='subtitle0'>
+            <p>
             <div class="weather-container">
                 <img class="icon">
                 <p class="weather"></p>
                 <p class="temp"></p>
             </div>
             <div class="add-button-container">
-                <input class = 'input' id="input0" type="text" placeholder="Enter your plans">
+                <input class='input' id="input0" type="text" placeholder="Enter your plans">
                 <input id="add0" type="button" value="Add" class='add-item'>
                 <br>
                 <br>
@@ -51,13 +57,14 @@
             </div>
         </div>
         <div id='add-new'>
-            <h1 id='add-new-header'>&nbsp Add another day <span id =add-new-button>+&nbsp</span></h1>
-                </div>
-              </div>
-            </h1>
+            <h1 id='add-new-header'>&nbsp Add another day <span id=add-new-button>+&nbsp</span></h1>
         </div>
+    </div>
+    </h1>
+    </div>
     </div>
 
     <script src='toDoList.js'></script>
 </body>
+
 </html>

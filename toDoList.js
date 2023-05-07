@@ -184,7 +184,7 @@
                             day.getElementsByClassName('weather')[0].innerHTML = weatherDescription;
                         }
                     })}
-                , 800);
+                , 3000);
                 // Use those coordinates to get a forecast
             } catch(error) {
                     // Could I display something like this to the user?
