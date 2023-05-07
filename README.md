@@ -3,4 +3,3 @@ Allows you to to see the weather for the next week and create a to-do list for e
 
 Development In Progress:
 - Weather API Call - errors need to be handled better
-- Storing to-do items in local storage; "Save List" button currently doesn't work
